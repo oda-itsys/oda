@@ -1,0 +1,64 @@
+<odoo>
+  <data>
+    <record id="view_order_product_pivot_inherit" model="ir.ui.view">
+         <field name="name">sale.report.pivot</field>
+         <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sale.view_order_product_pivot"/>
+         <field name="arch" type="xml">
+             <xpath expr="//field[@name='price_subtotal']" position="after">
+                 <field name="delivery_status" type="measure"/>
+
+
+             </xpath>
+         </field>
+    </record>
+
+      <record id="sale_view_order_form_inherit" model="ir.ui.view">
+         <field name="name">sale.order</field>
+         <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+         <field name="arch" type="xml">
+             <xpath expr="//notebook/page/field[@name='order_line']/tree/field[@name='price_subtotal']" position="after">
+                 <field name="delivery_status" />
+
+
+             </xpath>
+
+         </field>
+    </record>
+
+
+
+<!--    <record id="view_order_product_graph_inherit" model="ir.ui.view">-->
+<!--         <field name="name">sale.report.graph</field>-->
+<!--         <field name="model">sale.report</field>-->
+<!--        <field name="inherit_id" ref="sale.view_order_product_graph"/>-->
+<!--         <field name="arch" type="xml">-->
+
+<!--             <xpath expr="//field[@name='price_subtotal']" position="after">-->
+<!--                 <field name="delivery_status" type="measure"/>-->
+
+
+<!--             </xpath>-->
+<!--         </field>-->
+<!--    </record>-->
+
+    <record id="view_order_product_search_inherit" model="ir.ui.view">
+        <field name="name">sale.report.search</field>
+        <field name="model">sale.report</field>
+        <field name="inherit_id" ref="sale.view_order_product_search"/>
+        <field name="arch" type="xml">
+             <xpath expr="//field[@name='product_id']" position="after">
+                 <field name="delivery_status" />
+                 <filter string="Delivery Status" name="Delivery Status" />
+
+
+
+
+             </xpath>
+        </field>
+    </record>
+
+
+  </data>
+</odoo>

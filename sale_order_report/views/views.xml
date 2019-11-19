@@ -1,0 +1,50 @@
+<odoo>
+  <data>
+
+    <template id="custom_external_layout">
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"></t>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"></t>
+            </t>
+            <t t-call="sale_order_report.custom_external_layout_header"/>
+            <t t-raw="0"/>
+            <t t-call="sale_order_report.external_layout_footer"/>
+        </template>
+
+        <template id="custom_external_layout_header">
+            <div class="header">
+                <br/>
+                <table border="1" width="100%">
+                    <tr>
+
+                        <th width="50%" style="text-align: center;">
+                            <img src="/sale_order_report/static/description/Y-Logo1.png"
+                                 style=" height:100px; width:800px;"/>
+                        </th>
+                    </tr>
+
+                </table>
+            </div>
+
+        </template>
+
+         <template id="external_layout_footer">
+            <div class="footer">
+                <br/>
+                <table border="1" width="100%">
+                    <tr>
+                        <th width="50%" style="text-align: center;">
+                            <img src="/payslip_header_footer_report/static/description/yosr_footer2.png"
+                                 style=" height: 70px; width: 800px;"/>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </template>
+
+
+
+  </data>
+</odoo>

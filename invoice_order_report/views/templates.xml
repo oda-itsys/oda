@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <report id="invoice_order_report"
+                model="account.invoice"
+                string="invoice Report"
+                report_type="qweb-pdf"
+                file="invoice_order_report.invoice_order_report_temp"
+                name="invoice_order_report.invoice_order_report_temp"
+        />
+
+        <template id="invoice_order_report_temp">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <th t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure">
+                                <table style="text-align:center ;" align="left" height="20px;" width="840px;"
+                                       border="1">
+                                    <tr style="border:1px" height="10px;text-align: center ;">
+                                        <th style="border: 1px solid black; font-weight: normal;background-color:#A4A4A4;"
+                                            width="20%">ODA FURNITURE
+                                        </th>
+                                        <th style="border: 1px solid black; font-weight: normal;background-color:#A4A4A4;"
+                                            width="10%">MALL OF EGYPT
+                                        </th>
+                                    </tr>
+                                </table>
+                                <table align="left" height="20px;" width="840px;"
+                                       border="1">
+                                    <tr style="border: 1px">
+                                        <th style="border: 1px solid black;text-align: center ;">FINAL INVOICE</th>
+                                    </tr>
+                                </table>
+                                <table height="20px;" width="840px;" border="1">
+                                    <tr style="border: 1px" height="10px;">
+                                        <th style="border: 1px solid black;background-color:#A4A4A4;" width="5%">Date
+                                            :
+                                        </th>
+                                        <th style="border: 1px solid black; text-align: center ;background-color:#A4A4A4;"
+                                            t-field="o.date_invoice" width="10%"/>
+                                        <th style="border: 1px solid black; background-color:#A4A4A4; text-align: center;"
+                                            width="5%">NO :
+                                        </th>
+                                        <th style="border: 1px solid black; text-align: center;background-color:#A4A4A4;"
+                                            t-field="o.number" width="10%"/>
+                                    </tr>
+                                </table>
+
+                                <table height="20px;" width="600px;" border="1">
+                                    <tr style="border: 1px" height="10px;">
+                                        <th style="border: 1px solid" width="20%">Client :</th>
+                                        <th style="border: 1px solid black;text-align: center ;"
+                                            t-field="o.partner_id"/>
+                                    </tr>
+                                </table>
+                                <table height="20px;" width="600px;" border="1">
+                                    <tr style="border: 1px" height="10px;">
+                                        <th style="border: 1px solid;background-color:#A4A4A4;" width="20%">Mobile :
+                                        </th>
+                                        <th style="border: 1px solid black;text-align: center ;background-color:#A4A4A4;"
+                                            t-field="o.partner_id.phone"/>
+                                    </tr>
+                                </table>
+                                <table height="20px;" width="600px;" border="1">
+                                    <tr style="border: 1px" height="10px;">
+                                        <th style="border: 1px solid black;" width="20%">Address :</th>
+                                        <th style="border: 1px solid black;text-align: center ;"
+                                            t-field="o.partner_id.street"/>
+
+                                    </tr>
+                                </table>
+
+
+                                <table style="text-align:center ;" align="left" height="20px;" width="840px;"
+                                       border="1">
+                                    <thead style="background-color:#A4A4A4;">
+
+                                        <tr style="font-weight: bold;">
+                                            <th style="border: 1px solid black;" class="text-center">
+                                                <strong style="color:FFFFFF;">Code.</strong>
+                                            </th>
+                                            <th class="text-center" style="border: 1px solid black;">
+                                                <strong style="color:FFFFFF;">Description</strong>
+                                            </th>
+                                            <th class="text-center" style="border: 1px solid black;">
+                                                <strong style="color:FFFFFF;">QTY</strong>
+                                            </th>
+                                            <th class="text-center" style="border: 1px solid black;">
+                                                <strong style="color:FFFFFF;">Price</strong>
+                                            </th>
+                                            <th class="text-center" style="border: 1px solid black;">
+                                                <strong style="color:FFFFFF;">Amount</strong>
+                                            </th>
+                                            <th class="text-center" style="border: 1px solid black;">
+                                                <strong style="color:FFFFFF;">Delivey Status</strong>
+                                            </th>
+
+
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="o.invoice_line_ids" t-as="l">
+
+                                            <td class="text-center" style="border: 1px solid black;">
+                                                <span t-field="l.product_id.default_code"/>
+                                            </td>
+
+                                            <td class="text-center" style="border: 1px solid black;">
+                                                <span t-field="l.name"/>
+                                            </td>
+                                            <td class="text-center" style="border: 1px solid black;">
+                                                <span t-field="l.quantity"/>
+                                            </td>
+
+                                            <td class="text-center" style="border: 1px solid black;">
+                                                <span t-field="l.price_unit"/>
+                                            </td>
+
+                                            <td class="text-center" style="border: 1px solid black;">
+                                                <span t-field="l.price_subtotal"
+                                                      t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+                                            </td>
+                                            <td class="text-center" style="border: 1px solid black;">
+                                                <span t-field="l.delivery_status"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <table height="20px;" width="700px;" border="1">
+                                    <tr style="border: 1px" height="10px;">
+                                        <th style="border: 1px solid black ;text-align:center;font-weight: normal"
+                                            width="60%">REMAINING AMOUNT :
+                                        </th>
+                                        <th style="border: 1px solid black;text-align:center;" t-field="o.residual"/>
+                                    </tr>
+                                </table>
+                                <table height="20px;" width="700px;" border="1">
+                                    <tr style="border: 1px" height="10px;" t-if="o.type == 'out_invoice' ">
+                                        <th style="border: 1px solid black ;text-align:center;font-weight: normal"
+                                            width="60%">TOTAL AMOUNT :
+                                        </th>
+                                        <th style="border: 1px solid black;text-align:center;"
+                                            t-field="o.amount_total"/>
+                                    </tr>
+
+                                    <tr style="border: 1px" height="10px;" t-if="o.type == 'out_refund' ">
+                                        <th style="border: 1px solid black ;text-align:center;font-weight: normal"
+                                            width="60%">TOTAL AMOUNT :
+                                        </th>
+                                        <th style="border: 1px solid black;text-align:center;">
+                                            - <span t-field="o.amount_total"/>
+                                        </th>
+                                    </tr>
+                                </table>
+
+                                <br/>
+
+                                <div class="row mt16 mb16">
+
+                                    <div align="left" class="col-6" t-if="o.type == 'out_invoice' ">
+                                        <u>
+                                            <span style="font-size:15px; font-weight: bold;">TOTAL AMOUNT :
+                                            </span>
+                                        </u>
+                                        <strong style="font-weight: normal;" t-field="o.amount_total"/>
+                                    </div>
+
+
+                                    <div align="left" class="col-6" t-if="o.type == 'out_refund' ">
+                                        <u>
+                                            <span style="font-size:15px; font-weight: bold;">TOTAL AMOUNT :
+                                            </span>
+                                        </u>
+                                        -
+                                        <strong style="font-weight: normal;" t-field="o.amount_total"/>
+                                    </div>
+
+                                    <div align="left" class="col-6">
+                                        <u>
+                                            <span style="font-size:15px; font-weight: bold;">CURRENCY :
+                                            </span>
+                                        </u>
+                                        <strong style="font-weight: normal;" t-field="o.currency_id"/>
+                                    </div>
+                                </div>
+                                <strong style="font-weight: normal;">
+                                    ______________________________________________________________________________________________
+                                </strong>
+
+
+                                <div align="left">
+
+                                    <u>
+                                        <strong style="font-weight: bold;font-size:15px">
+                                            General Notes:
+                                        </strong>
+                                    </u>
+                                    <br/>
+
+                                    <strong style="font-weight: normal; font-size:14px">
+                                        1.All indicated images are for illustration only, the quoted price is based on
+                                        the description indicated..
+                                    </strong>
+
+                                </div>
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        2. All quoted prices are in EGP and excluded from 14% (VAT).
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        3. Clients are kindly requested to check all delivered items prior to signing
+                                        delivery receipt.
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        4. CDelivery fees are added on the total invoice based on the destination.
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        5. Full amount of purchased items shall be paid at lest one week before the
+                                        delivery.
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        6. Discount is based on the total, any change in the total may lead to a change
+                                        in the discount percentage.
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        7.The production will be delivered within four weeks at least start from paid
+                                        50% of total invoice.
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        8.There's no refund or exchange for custom made items.
+                                    </strong>
+
+                                </div>
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        9.There's 14 days for exchange or refund for the non custom items.
+                                    </strong>
+
+                                </div>
+                                <br/>
+                                <br/>
+
+                                <div align="left" class="col-6">
+                                    <u>
+                                        <span style="font-size:15px; font-weight: bold;">MALL OF EGYPT NUMBER :
+                                        </span>
+                                    </u>
+                                    <u>
+                                        <strong style="font-size:15px; font-weight: bold;"
+                                                t-field="o.company_id.phone"/>
+                                    </u>
+                                </div>
+                                <br/>
+
+                                <div align="left" class="col-6">
+                                    <u>
+                                        <span style="font-size:15px; font-weight: bold;">Client Signature:
+                                        </span>
+                                    </u>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </th>
+                </t>
+            </t>
+        </template>
+
+    </data>
+
+
+</odoo>

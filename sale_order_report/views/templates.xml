@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <report id="sale_order_report"
+                model="sale.order"
+                string="Sale order Report"
+                report_type="qweb-pdf"
+                file="sale_order_report.sale_order_temp"
+                name="sale_order_report.sale_order_temp"
+        />
+        <template id="sale_order_temp">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <div class="oe_structure">
+                                <div align="right">
+                                    <span>
+                                        <strong align="right" style="font-weight: normal; font-size:14px">Client : Mr.
+                                        </strong>
+                                        <strong t-field="o.partner_id" style="font-weight: normal; font-size:14px"/>
+                                        <br/>
+                                        <strong align="right" style="font-weight: normal; font-size:14px">Branch : Mall
+                                            Of Egypt
+                                        </strong>
+                                        <br/>
+                                        <strong align="right" style="font-weight: normal; font-size:14px">Date :
+                                        </strong>
+                                        <strong t-field="o.create_date" t-options='{"widget": "date"}'  style="font-weight: normal; font-size:14px"/>
+                                        <br/>
+                                        <strong align="right" style="font-weight: normal; font-size:14px">Ref :</strong>
+                                        <strong t-field="o.name" style="font-weight: normal; font-size:14px"/>
+                                    </span>
+                                </div>
+
+                                <div style="text-align: center; font-size:18px; color:#000000">
+                                    <strong>OFFER FOR Mr.</strong>
+                                    <strong t-field="o.partner_id" style="font-size:16px; color:#000000"/>
+                                </div>
+<!--                                <br/>-->
+                                <div style="text-align: left; font-size:16px; color:#000000">
+                                    <strong>Dear</strong>Mr.
+                                    <strong t-field="o.partner_id" style="font-size:16px; color:#000000"/>
+                                    <br/>
+                                    <strong style="font-weight: normal; font-size:14px">
+                                        Kindly Find THe attached our offer for your selected furniture items, as per
+                                        your request
+                                    </strong>
+
+                                </div>
+                                <br/>
+                                <table class="table table-condensed table-bordered" >
+                                    <thead style="background-color:#A4A4A4;">
+
+                                        <tr style="font-weight: bold;font-size:12px" >
+                                            <th class="text-center" style="background-color:#A4A4A4;">
+                                                <strong style="color:FFFFFF;">No.</strong>
+                                            </th>
+                                            <th class="text-center" >
+                                                <strong style="color:FFFFFF;">Category</strong>
+                                            </th>
+                                            <th class="text-center">
+                                                <strong style="color:FFFFFF;">Item Code</strong>
+                                            </th>
+                                            <th class="text-center" style="width:50%;">
+                                                <strong style="color:FFFFFF;">Description</strong>
+                                            </th>
+                                            <th class="text-center">
+                                                <strong style="color:FFFFFF;">QTY</strong>
+                                            </th>
+                                            <th class="text-center">
+                                                <strong style="color:FFFFFF;">Price Per Unit</strong>
+                                            </th>
+
+                                            <th class="text-center">
+                                                <strong style="color:FFFFFF;">Dis</strong>
+                                            </th>
+                                            <th class="text-center">
+                                                <strong style="color:FFFFFF;">Total</strong>
+                                            </th>
+
+                                            <th class="text-center" style="width:30%;"
+                                                t-if="o.print_image and o.image_sizes in ('image', 'image_medium', 'image_small')">
+                                                <strong style="color:FFFFFF;">Picture</strong>
+                                            </th>
+
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="i" t-value="1"/>
+                                        <tr t-foreach="o.order_line" t-as="l">
+                                            <td class="text-center">
+                                                <span t-esc="i"/>
+                                                <t t-set="i" t-value="i+1"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="l.product_id.categ_id"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="l.product_id.default_code"/>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <span t-field="l.name"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="l.product_uom_qty"/>
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="l.price_unit"/>
+                                            </td>
+
+                                            <td class="text-center">
+                                                <span t-field="l.discount"/> %
+                                            </td>
+
+                                            <td class="text-center">
+                                                <span t-field="l.price_subtotal"
+                                                      t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
+                                            </td>
+
+                                            <!--                                            <td>-->
+                                            <t t-if="o.image_sizes == 'image' and o.print_image ">
+                                                <td>
+                                                    <img t-attf-src="data:image/*;base64,{{l.product_id.image}}"
+                                                         style="width:120%;height:20%"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="o.image_sizes == 'image_medium' and o.print_image">
+                                                <td>
+                                                    <img t-attf-src="data:image/*;base64,{{l.product_id.image}}"
+                                                         style="width:120%;height:20%"/>
+                                                </td>
+                                            </t>
+                                            <t t-if="o.image_sizes == 'image_small' and o.print_image ">
+                                                <td>
+                                                    <img t-attf-src="data:image/*;base64,{{l.product_id.image}}"
+                                                         style="width:120%;height:20%"/>
+                                                </td>
+                                            </t>
+                                            <!--                                            </td>-->
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="clearfix">
+                                 <div class="row">
+                                <div  t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                                    <table  class="table table-sm">
+                                        <tr class="border-black"  style="border-bottom:1px solid #dddddd;">
+
+                                             <td class="text-right">
+                                                <strong>TOTAL AMOUNT:</strong>
+                                            </td>
+                                            <td class="text-right">
+                                                    <t t-set="i" t-value="0"/>
+                                                    <t t-foreach="o.order_line" t-as="s">
+                                                        <t t-set="i" t-value="i+s.price_subtotal"/>
+                                                    </t>
+                                                    <t t-esc="i"/>
+                                                </td>
+
+                                        </tr>
+
+                                    </table>
+                                </div>
+                                </div>
+                                </div>
+
+
+                                <div align="left">
+                                    <strong style="font-weight: normal; font-size:14px">
+                                        1.All indicated images are for illustration only, the quoted price is based on
+                                        the description indicated.
+                                    </strong>
+
+                                </div>
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        2. All quoted prices are valid for one week.
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        3. All quoted prices are in EGP and excluded from 14% (VAT).
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        4. Clients are kindly requested to check all delivered items prior to signing
+                                        delivery receipt.
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        5. Delivery fees are added on the total invoice based on the destination.
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        6. Full amount of purchased items shall be paid at lest one week before the
+                                        delivery.
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        7- Discount is based on the total, any change in the total may lead to a change
+                                        in
+                                        the discount percentage.
+                                    </strong>
+
+                                </div>
+
+                                <div align="left">
+                                    <strong style="font-weight: normal;font-size:14px">
+                                        8- The production will be delivered within four weeks at least start from paid
+                                        50% of total invoice.
+                                    </strong>
+
+                                </div>
+                                <div align="left">
+                                    <strong style="font-weight: normal; margin-left:50px ;font-size:12px">
+                                        For further information, please don't hesitate to contact us.
+                                    </strong>
+
+                                </div>
+                                <!--                                <br/>-->
+
+                                <div align="left" style="color:#000000">
+                                    <strong style="margin-left:50px ;font-size:14px">
+                                        Best Regards,
+                                    </strong>
+                                </div>
+                                <div align="left" style="color:#000000">
+                                    <strong t-field="o.user_id" style="margin-left:50px ;font-size:14px">
+                                    </strong>
+                                </div>
+                                <div align="left" style="color:#000000">
+                                    <strong style="margin-left:50px ;font-size:14px">
+                                        Sales executive
+                                    </strong>
+                                </div>
+                                <div align="left" style="color:#000000">
+                                    <strong t-field="o.user_id.phone" style="margin-left:50px ;font-size:14px">
+                                    </strong>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </t>
+
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+                id="stock_picking_report"
+                model="stock.picking"
+                string="Delivery Report"
+                report_type="qweb-pdf"
+                name="stock_picking_report.report_stock_picking_document_22"
+                file="stock_picking_report.report_stock_picking_document_22"
+        />
+        <template id="custom_external_layout_header_ar2_oda">
+            <div class="header">
+                <div width="50%">
+                    <img src="/stock_picking_report/static/description/oda.jpg"
+                         style=" height:120px; width:250px;"/>
+                </div>
+            </div>
+            <div class="article o_report_layout_standard" t-att-data-oe-model="o and o._name"
+                 t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-call="web.address_layout"/>
+                <t t-raw="0"/>
+            </div>
+
+        </template>
+        <template id="external_layout_22_oda">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+
+            <t t-call="stock_picking_report.custom_external_layout_header_ar2_oda">
+                <t t-raw="0"/>
+            </t>
+        </template>
+
+        <template id="report_stock_picking_document_22">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="stock_picking_report.external_layout_22_oda">
+                        <t t-set="o" t-value="o.with_context({'lang': lang})"/>
+                        <div class="page">
+                            <table border="0" cellpadding="50" align="center">
+                                <tr>
+                                    <th style="text-align: left;padding: 1px;" width="20%">ODA FURNITURE</th>
+                                    <th style="text-align: right;padding: 1px;" width="20%">MALL OF EGYPT</th>
+                                </tr>
+                            </table>
+
+                            <div align="center">
+                                <strong class="text-center" align="center" style="font-size: 20px; font-weight: bold;">
+                                    DELIVERY ORDER
+                                    <br/>
+                                    <p t-field="o.name"/>
+                                </strong>
+                            </div>
+                            <div>
+                                <div t-if="o.name" name="description">
+                                    <strong>DATE:</strong>
+                                    <strong t-field="o.scheduled_date"/>
+                                </div>
+                                <div>
+                                    <!--<strong>Address:</strong>-->
+                                    <strong>CLIENT NAME:</strong>
+                                    <strong t-field="o.partner_id.name"/>
+                                </div>
+                                <div name="Mobile">
+                                    <strong>MOBILE:</strong>
+                                    <strong t-field="o.partner_id.mobile"/>
+                                </div>
+                                <div name="ADDRESS">
+                                    <strong>ADDRESS:</strong>
+                                    <strong>
+                                        <address t-field="o.partner_id"
+                                                 t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                                    </strong>
+                                </div>
+                            </div>
+                            <t t-set="total" t-value="0"/>
+                            <table style="border-color:black,border-style:solid;" border="1"
+                                   class="table table-condensed table-bordered" name="picking_table">
+                                <thead style="background-color:#A4A4A4;">
+                                    <tr>
+                                        <th>
+                                            <span>ITEM CODE #</span>
+                                        </th>
+                                        <th>
+                                            <span>DESCRIPTION</span>
+                                        </th>
+                                        <th>
+                                            <span>QUANTITY</span>
+                                        </th>
+                                        <th>
+                                            <span>PICTURE</span>
+                                        </th>
+                                        <th>
+                                            <span>NOTES</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="picking_tbody">
+                                    <t t-foreach="o.move_ids_without_package" t-as="line">
+                                        <tr>
+                                            <t>
+                                                <td>
+                                                    <span t-field="line.product_id.default_code"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="line.product_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="line.product_uom_qty"/>
+                                                    <t t-set="total" t-value="total+line.product_uom_qty"/>
+                                                </td>
+
+                                                <td>
+                                                    <img t-attf-src="data:image/*;base64,{{line.product_id.image_medium}}"
+                                                         style="width:120%;height:20%"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="line.notes"/>
+                                                </td>
+
+                                            </t>
+                                        </tr>
+                                    </t>
+                                    <tr style="background-color:#A4A4A4;">
+                                        <td></td>
+                                        <td class="text-right">
+                                            TOTAL ITEMS
+                                        </td>
+
+                                        <td class="text-right">
+                                            <span t-esc="total"/>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                            <strong class="text-left">
+                                Notes :
+                            </strong>
+                                <br/>
+                                <p>
+                                    <span t-field="o.note"/>
+                                </p>
+
+                            <br/>
+                            <table border="0" cellpadding="50">
+                                <tr>
+                                    <th style="text-align: left;padding: 1px;" width="20%">Sales Executive:</th>
+                                    <th style="text-align: right;padding: 1px;" width="20%">Client Signature :</th>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">
+                                        <span t-field="o.create_uid.name"/>
+                                    </th>
+                                </tr>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

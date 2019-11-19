@@ -1,0 +1,34 @@
+<odoo>
+    <data>
+        <record id="fixed_discount_form_view_inherit_OO_disc" model="ir.ui.view">
+            <field name="name">sale order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="groups_id" eval="[(4,ref('sales_additional_discount.group_discount_extra'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_untaxed']" position="after">
+                    <field name="discount_total_sale"/>
+                </xpath>
+                <xpath expr="/form/sheet/notebook/page/field[@name='order_line']/tree/field[@name='discount']"
+                       position="after">
+                    <field name="sale_additional_discount" attrs="{'readonly': [('state','!=','draft')]}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="fixed_amount_account_invoice_form_inherite_disc" model="ir.ui.view">
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="groups_id" eval="[(4,ref('sales_additional_discount.group_discount_extra'))]"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_untaxed']" position="after">
+                    <field name="discount_total_sale"/>
+                </xpath>
+                <xpath expr="/form/sheet/notebook/page/field[@name='invoice_line_ids']/tree/field[@name='discount']"
+                       position="after">
+                    <field name="sale_additional_discount" readonly="1" force_save="1"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
